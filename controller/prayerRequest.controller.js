@@ -22,6 +22,15 @@ const prayerRequestController = {
             return res.status(401).send({error})
         }
     },
+    getMyPrayers: async (req, res) => {
+        try {
+            const myPrayers = await PrayerRequest.find({ prayedBy: req.user.id })
+            .populate('prayedBy', 'id username')
+            res.status(200).json({ myPrayers })
+        } catch(e) {
+            res.status(401).json({ error: e })
+        }
+    }
 }
 
 module.exports = { prayerRequestController };

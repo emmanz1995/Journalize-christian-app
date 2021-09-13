@@ -3,5 +3,6 @@ const { prayerRequestController } = require('../controller/prayerRequest.control
 const authJwt = require('../middleware/authJwt');
 
 router.post('/createRequest', authJwt, prayerRequestController.createPrayerRequest);
+router.get('/getmyprayers', authJwt, prayerRequestController.getMyPrayers);
 
 module.exports = router;
