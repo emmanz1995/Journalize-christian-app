@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/v1/auth', require('./routes/auth.routes'));
+app.use('/v1/api/prayers', require('./routes/prayerRequest.routes'));
 
 app.listen(PORT, () => {
     console.log(`PORT ${PORT} is running successfully!`);
