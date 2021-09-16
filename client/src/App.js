@@ -9,7 +9,7 @@ function App() {
   return (
     <div className='app'>
       <GlobalStyle />
-      <Navbar />
+        <Navbar />
         <Switch>
           <Route exact path='/' component={Login} />
           <Route path='/register' component={Register} />

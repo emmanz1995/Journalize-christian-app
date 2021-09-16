@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import CustomTextFields from '../components/customTextFields/CustomTextFields';
 import { AuthService } from '../service/AuthService';
+import SimpleReactValidator from 'simple-react-validator';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../app/action/authAction';
 
 const Container = styled.main`
   margin: 90px 0;
@@ -54,15 +57,25 @@ const StyledButton = styled.input`
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [, forceUpdate] = useState();
+    const validator = useRef(new SimpleReactValidator());
+    const dispatch = useDispatch()
+    const { loggedIn } = useSelector(state => state.authReducer)
+
     const handleLogin = (evt) => {
         evt.preventDefault();
-        AuthService.onLogin(email, password)
+        if(validator.current.allValid()) {
+            dispatch(login(email, password))
             .then((success) => {
                 console.log(success)
             })
             .catch((error) => {
                 console.log(error);
             })
+        } else {
+            validator.current.showMessages();
+            forceUpdate(1);
+        }
     }
     return (
         <Container>
@@ -71,9 +84,11 @@ function Login() {
                     <LoginForm onSubmit={handleLogin}>
                         <h2>Journalize</h2><br />
                         <label htmlFor="email">Email:</label>
-                        <CustomTextFields type="text" className="form-input" name="email" inputValue={email} changeInput={(evt) => setEmail(evt.target.value)} placeholder="john.doe@gmail.com" /><br />
+                        <CustomTextFields type="text" className="form-input" name="email" inputValue={email} changeInput={(evt) => setEmail(evt.target.value)} placeholder="john.doe@gmail.com" />
+                        <span>{validator.current.message('email', email, 'required|email', { className: 'text-danger'})}</span><br />
                         <label htmlFor="password">Password:</label>
-                        <CustomTextFields type="password" className="form-input" name="password" inputValue={password} changeInput={(evt) => setPassword(evt.target.value)} placeholder="xxxxxxxxxxxxxxxxxxx" /><br />
+                        <CustomTextFields type="password" className="form-input" name="password" inputValue={password} changeInput={(evt) => setPassword(evt.target.value)} placeholder="xxxxxxxxxxxxxxxxxxx" />
+                        <span>{validator.current.message('password', password, 'required|min:7|max:20', { className: 'text-danger'})}</span><br />
                         <StyledButton type="submit" value="Login" />
                         <br /><br />
                         <span className="reg-li">Need an Account? <a href="">Join Now!</a></span>

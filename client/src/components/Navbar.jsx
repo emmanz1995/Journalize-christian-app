@@ -24,7 +24,7 @@ const NavbarWrapper = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 200px;
+    width: 145px;
     a {
       text-decoration: none;
       color: ${props => props.theme.MainColor};
@@ -38,7 +38,6 @@ function Navbar() {
             <NavbarWrapper>
                 <h2>Journalize</h2>
                 <ul>
-                    <li><a href="">Home</a></li>
                     <li><a href="">Login</a></li>
                     <li><a href="">Register</a></li>
                 </ul>

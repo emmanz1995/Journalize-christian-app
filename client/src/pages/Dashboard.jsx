@@ -1,8 +1,11 @@
 import React from 'react';
+import Banner from '../components/Banner';
 
 function Dashboard() {
     return (
-        <div></div>
+        <div>
+            <Banner />
+        </div>
     );
 }
 
