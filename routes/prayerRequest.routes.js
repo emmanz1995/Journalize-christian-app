@@ -4,5 +4,6 @@ const authJwt = require('../middleware/authJwt');
 
 router.post('/createRequest', authJwt, prayerRequestController.createPrayerRequest);
 router.get('/getmyprayers', authJwt, prayerRequestController.getMyPrayers);
+router.delete('/deleteMyPrayers/:id', authJwt, prayerRequestController.deleteMyPrayers);
 
 module.exports = router;

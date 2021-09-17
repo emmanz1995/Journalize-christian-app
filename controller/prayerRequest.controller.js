@@ -30,6 +30,20 @@ const prayerRequestController = {
         } catch(e) {
             res.status(401).json({ error: e })
         }
+    },
+    deleteMyPrayers: async (req, res) => {
+        try {
+            await PrayerRequest.findOne({ _id: req.params.id })
+            .populate('prayedBy', 'id')
+            if(PrayerRequest.prayedBy._id.toString() === req.user.id.toString()) {
+                const response = await PrayerRequest.remove()
+                res.status(200).json({ response })
+            }
+        } catch(e) {
+            res.status(401).json({ error: e });
+            console.log(e);
+            console.log(req)
+        }
     }
 }
 
