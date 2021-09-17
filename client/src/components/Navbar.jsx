@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AuthService } from '../service/AuthService';
+import { useHistory } from 'react-router-dom';
 
 const NavbarContainer = styled.nav`
   padding: 5px;
@@ -33,13 +35,24 @@ const NavbarWrapper = styled.section`
 `;
 
 function Navbar() {
+    let history = useHistory()
+    const user = AuthService.getUserInfo();
+    const handleLogout = (evt) => {
+        evt.preventDefault();
+        AuthService.onLogout();
+        history.push('/');
+    }
     return (
         <NavbarContainer>
             <NavbarWrapper>
                 <h2>Journalize</h2>
                 <ul>
-                    <li><a href="">Login</a></li>
-                    <li><a href="">Register</a></li>
+                    {user ? '' : <li><a href="/register">Register</a></li>}
+                    {user ? (
+                        <li><a href="" onClick={handleLogout}>Logout</a></li>
+                    ) : (
+                        <li><a href="/">Login</a></li>
+                    )}
                 </ul>
             </NavbarWrapper>
         </NavbarContainer>

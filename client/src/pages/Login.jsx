@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import CustomTextFields from '../components/customTextFields/CustomTextFields';
 import { AuthService } from '../service/AuthService';
 import SimpleReactValidator from 'simple-react-validator';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../app/action/authAction';
+import { Redirect, useHistory } from 'react-router-dom';
 
 const Container = styled.main`
   margin: 90px 0;
@@ -59,15 +58,15 @@ function Login() {
     const [password, setPassword] = useState('');
     const [, forceUpdate] = useState();
     const validator = useRef(new SimpleReactValidator());
-    const dispatch = useDispatch()
-    const { loggedIn } = useSelector(state => state.authReducer)
+    const history = useHistory();
 
     const handleLogin = (evt) => {
         evt.preventDefault();
         if(validator.current.allValid()) {
-            dispatch(login(email, password))
+            AuthService.onLogin(email, password)
             .then((success) => {
                 console.log(success)
+                history.push('/dashboard');
             })
             .catch((error) => {
                 console.log(error);
@@ -77,12 +76,15 @@ function Login() {
             forceUpdate(1);
         }
     }
+    if(AuthService.getUserInfo()) {
+        return <Redirect to={{ pathname: '/dashboard' }} />
+    }
     return (
         <Container>
             <BackgroundForm>
                 <LoginWrapper>
                     <LoginForm onSubmit={handleLogin}>
-                        <h2>Journalize</h2><br />
+                        <h2>Sign into Journalize</h2><br />
                         <label htmlFor="email">Email:</label>
                         <CustomTextFields type="text" className="form-input" name="email" inputValue={email} changeInput={(evt) => setEmail(evt.target.value)} placeholder="john.doe@gmail.com" />
                         <span>{validator.current.message('email', email, 'required|email', { className: 'text-danger'})}</span><br />
