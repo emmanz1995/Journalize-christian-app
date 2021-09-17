@@ -17,7 +17,7 @@ const authController = {
             const passwordHashed = await bcrypt.compare(password, user.password)
             !passwordHashed && res.status(400).json('Wrong password')
             const token = jwt.sign(
-                { id: user._id, email }, JWT_SECRET, { expiresIn: '5d' }
+                { id: user._id, email: user.email, fullName: user.fullName, sub: user.username, image: user.pic }, JWT_SECRET, { expiresIn: '5d' }
             )
             res.status(200).send({token, id: user._id})
         } catch(error) {
