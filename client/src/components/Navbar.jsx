@@ -26,7 +26,7 @@ const NavbarWrapper = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 145px;
+    width: 200px;
     a {
       text-decoration: none;
       color: ${props => props.theme.MainColor};
@@ -47,7 +47,7 @@ function Navbar() {
             <NavbarWrapper>
                 <h2>Journalize</h2>
                 <ul>
-                    {user ? '' : <li><a href="/register">Register</a></li>}
+                    {user ? <li><a href="/">{user?.sub}</a></li> : <li><a href="/register">Register</a></li>}
                     {user ? (
                         <li><a href="" onClick={handleLogout}>Logout</a></li>
                     ) : (

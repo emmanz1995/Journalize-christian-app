@@ -4,6 +4,7 @@ import CustomTextFields from '../components/customTextFields/CustomTextFields';
 import { AuthService } from '../service/AuthService';
 import SimpleReactValidator from 'simple-react-validator';
 import { Redirect, useHistory } from 'react-router-dom';
+import MainButton from '../components/customButtons/MainButton';
 
 const Container = styled.main`
   margin: 90px 0;
@@ -45,13 +46,13 @@ const LoginForm = styled.form`
   }
 `;
 
-const StyledButton = styled.input`
-  width: 100%;
-  padding: 7px;
-  border: 2px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-`;
+// const StyledButton = styled.input`
+//   width: 100%;
+//   padding: 7px;
+//   border: 2px solid #ddd;
+//   border-radius: 4px;
+//   cursor: pointer;
+// `;
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -91,7 +92,8 @@ function Login() {
                         <label htmlFor="password">Password:</label>
                         <CustomTextFields type="password" className="form-input" name="password" inputValue={password} changeInput={(evt) => setPassword(evt.target.value)} placeholder="xxxxxxxxxxxxxxxxxxx" />
                         <span>{validator.current.message('password', password, 'required|min:7|max:20', { className: 'text-danger'})}</span><br />
-                        <StyledButton type="submit" value="Login" />
+                        {/*<StyledButton type="submit" value="Login" />*/}
+                        <MainButton type="submit" value="Login" />
                         <br /><br />
                         <span className="reg-li">Need an Account? <a href="">Join Now!</a></span>
                     </LoginForm>

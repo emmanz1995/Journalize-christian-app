@@ -31,18 +31,29 @@ const prayerRequestController = {
             res.status(401).json({ error: e })
         }
     },
+    getPrayer: async (req, res) => {
+        try {
+            const { _id } = req.params.id
+            await PrayerRequest.findOne(_id)
+            const response = await PrayerRequest.findOne({ prayedBy: req.user.id })
+            return res.status(200).json({ response })
+        } catch(e) {
+            return res.status(401).json({ error: e })
+        }
+    },
     deleteMyPrayers: async (req, res) => {
         try {
             await PrayerRequest.findOne({ _id: req.params.id })
-            .populate('prayedBy', 'id')
-            if(PrayerRequest.prayedBy._id.toString() === req.user.id.toString()) {
-                const response = await PrayerRequest.remove()
-                res.status(200).json({ response })
+            .populate('prayedBy', '_id')
+            const response = await PrayerRequest.deleteOne({ prayedBy: req.user.id })
+            if(!response) {
+                return res.status(422).json({ error: 'Could not delete prayer request' })
+            } else {
+                res.status(200).json({ response });
             }
         } catch(e) {
             res.status(401).json({ error: e });
             console.log(e);
-            console.log(req)
         }
     }
 }
