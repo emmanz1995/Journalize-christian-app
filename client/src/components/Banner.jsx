@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AuthService } from '../service/AuthService';
 
@@ -79,18 +79,26 @@ const Nav = styled.nav`
 `
 
 function Banner() {
-    const [currentUser, setCurrentUser] = useState(AuthService.getUserInfo)
+    const [userInfo, setUserInfo] = useState(null);
+    useEffect(() => {
+        const getUserInfo = () => {
+            AuthService.currentUser.subscribe(user => {
+                setUserInfo(user)
+            })
+        }
+        return getUserInfo();
+    }, [])
     return (
         <BannerContainer>
             <div className="banner-wrapper">
                 <div className="banner">
                     <div className="banner-info">
                         <div className="img-container">
-                            <img src={currentUser?.image} alt={currentUser?.sub} className="profile-pic" width="600" height="400" />
+                            <img src={userInfo?.image} alt={userInfo?.sub} className="profile-pic" width="600" height="400" />
                         </div>
                         <div className="username-text">
-                            <h1>{currentUser?.fullName}</h1>
-                            <h4>{currentUser?.sub}</h4>
+                            <h1>{userInfo?.fullName}</h1>
+                            <h4>{userInfo?.sub}</h4>
                         </div>
                     </div>
                     <button className="btn-edit">Edit</button>

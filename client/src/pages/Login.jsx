@@ -77,7 +77,7 @@ function Login() {
             forceUpdate(1);
         }
     }
-    if(AuthService.getUserInfo()) {
+    if(AuthService.currentUserValue) {
         return <Redirect to={{ pathname: '/dashboard' }} />
     }
     return (
