@@ -26,7 +26,7 @@ const prayerRequestController = {
         try {
             const myPrayers = await PrayerRequest.find({ prayedBy: req.user.id })
             .populate('prayedBy', 'id username')
-            res.status(200).json({ myPrayers })
+            res.status(200).json(myPrayers)
         } catch(e) {
             res.status(401).json({ error: e })
         }
