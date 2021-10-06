@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { AuthService } from '../service/AuthService';
 import { useHistory } from 'react-router-dom';
@@ -26,7 +26,7 @@ const NavbarWrapper = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 145px;
+    width: 200px;
     a {
       text-decoration: none;
       color: ${props => props.theme.MainColor};
@@ -36,7 +36,16 @@ const NavbarWrapper = styled.section`
 
 function Navbar() {
     let history = useHistory()
-    const user = AuthService.getUserInfo();
+    const [userInfo, setUserInfo] = useState(null);
+    useEffect(() => {
+        const getUserInfo = () => {
+            AuthService.currentUser.subscribe(user => {
+                setUserInfo(user)
+            })
+        }
+        return getUserInfo();
+    }, [])
+
     const handleLogout = (evt) => {
         evt.preventDefault();
         AuthService.onLogout();
@@ -47,12 +56,8 @@ function Navbar() {
             <NavbarWrapper>
                 <h2>Journalize</h2>
                 <ul>
-                    {user ? '' : <li><a href="/register">Register</a></li>}
-                    {user ? (
-                        <li><a href="" onClick={handleLogout}>Logout</a></li>
-                    ) : (
-                        <li><a href="/">Login</a></li>
-                    )}
+                    {userInfo ? <li><a href="/">{userInfo?.sub}</a></li> : <li><a href="/register">Register</a></li>}
+                    {userInfo ? <li><a href="" onClick={handleLogout}>Logout</a></li> : <li><a href="/">Login</a></li>}
                 </ul>
             </NavbarWrapper>
         </NavbarContainer>

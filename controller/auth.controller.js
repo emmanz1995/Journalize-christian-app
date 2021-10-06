@@ -19,7 +19,7 @@ const authController = {
             const token = jwt.sign(
                 { id: user._id, email: user.email, fullName: user.fullName, sub: user.username, image: user.pic }, JWT_SECRET, { expiresIn: '5d' }
             )
-            res.status(200).send({token, id: user._id})
+            res.status(200).send({token, id: user._id, email: user.email, fullName: user.fullName, sub: user.username, image: user.pic})
         } catch(error) {
             res.status(422).send(error)
         }

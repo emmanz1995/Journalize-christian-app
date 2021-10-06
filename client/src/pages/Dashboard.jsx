@@ -22,7 +22,7 @@ const DashboardContainer = styled.main`
   }
   .search-prayer {
     padding: 7px;
-    width: 1000px;
+    width: 1042px;
     border-radius: 4px;
     border: 2px solid #ddd;
     &:hover {

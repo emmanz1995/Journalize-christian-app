@@ -4,7 +4,7 @@ import { AuthService } from '../service/AuthService';
 
 export const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => {
-        const loggedIn = AuthService.getUserInfo();
+        const loggedIn = AuthService.currentUserValue;
         if(!loggedIn) {
             return <Redirect to={{ pathname: '/', state: { from: props.location } }} />
         }

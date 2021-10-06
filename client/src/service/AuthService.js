@@ -1,5 +1,7 @@
 import axios from 'axios';
-import decode from 'jwt-decode';
+import { BehaviorSubject } from 'rxjs';
+
+const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('userInfo')))
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -12,27 +14,28 @@ function onLogin(email, password) {
     })
     .then((response) => {
         if(response.data.token) {
-            localStorage.setItem('jwt', JSON.stringify(response.data.token));
+            localStorage.setItem('userInfo', JSON.stringify(response.data));
+            currentUserSubject.next(response.data)
         }
         return response.data;
     })
 }
 
-function getUserInfo() {
-    try {
-        const token = localStorage.getItem('jwt');
-        return decode(token);
-    } catch(e) {
-        return null;
-    }
-}
+// function getUserInfo() {
+//     return JSON.parse(localStorage.getItem('userInfo'));
+// }
 
 function onLogout() {
     localStorage.clear();
+    currentUserSubject.next(null);
 }
 
 export const AuthService = {
     onLogin,
-    getUserInfo,
-    onLogout
+    // getUserInfo,
+    onLogout,
+    currentUser: currentUserSubject.asObservable(),
+    get currentUserValue() {
+        return currentUserSubject.value
+    },
 }
