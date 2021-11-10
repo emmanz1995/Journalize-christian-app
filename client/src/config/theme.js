@@ -5,7 +5,7 @@ const media = {
 
 const theme = {
   ...media,
-  MainColor: '#F1F1F1',
+  MainColor: '#F6F8F9',
   DarkGrayLight: '#4D4D4D'
 }
 
